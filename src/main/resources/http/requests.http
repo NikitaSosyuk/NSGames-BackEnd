@@ -1,0 +1,64 @@
+POST http://localhost/signUp
+Content-Type: application/json
+
+{
+  "username" : "Nikita",
+  "password" : "123",
+  "email" : "123@gmail.com"
+}
+
+###
+
+POST http://localhost/teachers
+Content-Type: application/json
+
+{
+  "firstName" : "Марсель",
+  "lastName": "Сидиков"
+}
+
+###
+
+POST http://localhost/teachers
+Content-Type: application/json
+
+{
+"firstName" : "Михаил",
+"lastName": "Абрамский"
+}
+
+###
+
+PUT http://localhost/teachers/1
+Content-Type: application/json
+
+{
+  "firstName" : "Марсель",
+  "lastName" : "Ситдиков"
+}
+
+###
+
+DELETE http://localhost/teachers/1
+
+###
+
+GET http://localhost/courses
+
+###
+
+POST http://localhost/courses
+Content-Type: application/json
+
+{
+  "title": "Информатика"
+}
+
+###
+
+POST http://localhost/courses/1/teachers
+Content-Type: application/json
+
+{
+  "id" : 1
+}
