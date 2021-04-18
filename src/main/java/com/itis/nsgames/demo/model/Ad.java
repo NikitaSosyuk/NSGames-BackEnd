@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.Set;
 
 @Data
 @Builder
@@ -15,32 +16,37 @@ import java.util.Date;
 @Entity
 @Table(name = "ad")
 public class Ad {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-
-    @Column(name = "user_id")
-    private long userId;
+    private Integer id;
 
     @Column(length = 1024)
     private String description;
 
-    @Column(name = "chat_id")
-    private String chatId;
+    @Column()
+    private String title;
 
     @Column
-    private double price;
+    private Double price;
 
     @Column
     private Date date;
 
-    @Column(name = "user_state")
+    @ManyToOne
+    @JoinColumn(name = "account_id")
+    private User user;
+
+    @ManyToMany
+    @JoinTable(name = "ad_game",
+            joinColumns = {@JoinColumn(name = "ad_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "game_id", referencedColumnName = "id")})
+    private Set<Game> tradeGames;
+
+    @Column(name = "ad_state")
     @Enumerated(value = EnumType.ORDINAL)
-    private Ad.State userState;
+    private Ad.State adState;
 
     public enum State {
-        ACTIVE, BOOKED ,FINISHED
+        ACTIVE, FINISHED
     }
-
 }

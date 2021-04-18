@@ -19,7 +19,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
-
     @Autowired
     private JwtFilter jwtFilter;
 
@@ -42,7 +41,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/signUp").permitAll()
                 .antMatchers("/signIn").permitAll()
-                .antMatchers("/getAll").hasAuthority(User.Role.ADMIN.toString())
+                .antMatchers("/forgotPassword/*").permitAll()
+                .antMatchers("/admin/**").hasAuthority(User.Role.ADMIN.toString())
+                .antMatchers("/game/putAll").hasAuthority(User.Role.ADMIN.toString())
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);

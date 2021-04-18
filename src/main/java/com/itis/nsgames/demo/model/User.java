@@ -6,7 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.UUID;
+import java.util.List;
+import java.util.Set;
 
 @Data
 @Builder
@@ -18,10 +19,9 @@ import java.util.UUID;
         @UniqueConstraint(columnNames = "email", name = "email_unique")
 })
 public class User {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(name = "chat_id")
     private String chatId;
@@ -29,19 +29,31 @@ public class User {
     @Column
     private String username;
 
+    @Column(name = "password_code")
+    private String code;
+
     @Column
     private String email;
 
     @Column
     private String password;
 
-    @Column(name = "user_state")
+    @Column(name = "account_state")
     @Enumerated(value = EnumType.STRING)
     private State userState;
 
-    @Column(name = "user_role")
+    @Column(name = "account_role")
     @Enumerated(value = EnumType.STRING)
     private Role userRole;
+
+    @OneToMany(mappedBy = "user")
+    private Set<Ad> ads;
+
+    @ManyToMany
+    @JoinTable(name = "ad_user",
+            joinColumns = {@JoinColumn(name = "ad_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "account_id", referencedColumnName = "id")})
+    private Set<Ad> likedAds;
 
     public enum State {
         ACTIVE, BANNED

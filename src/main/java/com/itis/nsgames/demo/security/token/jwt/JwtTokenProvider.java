@@ -1,7 +1,6 @@
 package com.itis.nsgames.demo.security.token.jwt;
 
 import com.itis.nsgames.demo.security.token.ApplicationUserDetailsService;
-import com.itis.nsgames.demo.service.iterfaces.UserService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;

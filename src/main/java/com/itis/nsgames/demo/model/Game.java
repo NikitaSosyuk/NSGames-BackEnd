@@ -16,10 +16,9 @@ import javax.persistence.*;
         @UniqueConstraint(columnNames = "name", name = "name_unique")
 })
 public class Game {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Integer id;
 
     @Column
     private String name;
