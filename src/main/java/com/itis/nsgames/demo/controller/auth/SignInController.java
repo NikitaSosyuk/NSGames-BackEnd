@@ -16,14 +16,15 @@ import java.util.Map;
 
 @RestController
 public class SignInController {
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+    private final JwtTokenProvider jwtTokenProvider;
+    private final AuthenticationManager authenticationManager;
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
-
-    @Autowired
-    private JwtTokenProvider jwtTokenProvider;
+    public SignInController(UserService userService, AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider) {
+        this.userService = userService;
+        this.authenticationManager = authenticationManager;
+        this.jwtTokenProvider = jwtTokenProvider;
+    }
 
     @PostMapping("/signIn")
     public ResponseEntity<?> signIn(@RequestBody UserSignInForm userForm) {
@@ -41,7 +42,6 @@ public class SignInController {
         Map<Object, Object> response = new HashMap<>();
         response.put("user", UserDto.from(user));
         response.put("token", token);
-        System.out.println("done");
         return ResponseEntity.ok(response);
 
     }

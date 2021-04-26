@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -15,15 +16,15 @@ import java.util.Set;
 @NoArgsConstructor
 @Entity
 @Table(name = "ad")
-public class Ad {
+public class Ad implements Comparable<Ad> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(length = 1024)
+    @Column(length = 2048)
     private String description;
 
-    @Column()
+    @Column
     private String title;
 
     @Column
@@ -32,21 +33,34 @@ public class Ad {
     @Column
     private Date date;
 
+    @Column
+    private Integer views;
+
     @ManyToOne
     @JoinColumn(name = "account_id")
     private User user;
+
+    @OneToMany
+    private List<PhotoName> photoNames;
+
+    @OneToMany
+    private List<Offer> offerList;
 
     @ManyToMany
     @JoinTable(name = "ad_game",
             joinColumns = {@JoinColumn(name = "ad_id", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "game_id", referencedColumnName = "id")})
-    private Set<Game> tradeGames;
+    private List<Game> tradeGames;
 
-    @Column(name = "ad_state")
-    @Enumerated(value = EnumType.ORDINAL)
-    private Ad.State adState;
-
-    public enum State {
-        ACTIVE, FINISHED
+    @Override
+    public int compareTo(Ad ad) {
+        if (this.date.after(ad.date)) {
+            return -1;
+        }
+        if (this.date.before(ad.date)) {
+            return 1;
+        }
+        return 0;
     }
+
 }

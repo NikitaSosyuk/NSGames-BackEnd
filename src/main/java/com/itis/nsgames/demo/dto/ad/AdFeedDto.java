@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.net.URL;
 import java.util.Date;
 
 @Data
@@ -17,12 +18,15 @@ public class AdFeedDto {
     private String name;
     private boolean isLiked;
     private Date date;
+    private String photoName;
 
     public static AdFeedDto from(Ad ad, boolean isLiked) {
         return  AdFeedDto.builder()
                 .id(ad.getId())
                 .name(ad.getTitle())
                 .isLiked(isLiked)
+                .date(ad.getDate())
+                .photoName(ad.getPhotoNames().get(0).getName())
                 .build();
     }
 }

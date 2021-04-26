@@ -13,14 +13,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class SignUpController {
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
-
-    @Autowired
-    private JwtTokenProvider jwtTokenProvider;
+    public SignUpController(UserService userService) {
+        this.userService = userService;
+    }
 
     @PostMapping("/signUp")
     public ResponseEntity<?> addTeacher(@RequestBody UserSignUpForm userForm) {

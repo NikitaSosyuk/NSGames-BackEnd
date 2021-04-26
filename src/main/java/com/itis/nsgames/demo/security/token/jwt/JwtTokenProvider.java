@@ -18,12 +18,14 @@ import java.util.Date;
 
 @Component
 public class JwtTokenProvider {
-
-    @Autowired
-    private ApplicationUserDetailsService userDetailsService;
+    private final ApplicationUserDetailsService userDetailsService;
 
     @Value("${jwt.secretKey}")
     private String secretKey;
+
+    public JwtTokenProvider(ApplicationUserDetailsService userDetailsService) {
+        this.userDetailsService = userDetailsService;
+    }
 
     @PostConstruct
     public void init() {

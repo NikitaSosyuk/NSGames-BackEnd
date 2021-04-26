@@ -23,8 +23,8 @@ public class GameServiceImplementation implements GameService {
     }
 
     @Override
-    public Set<Game> getGamesByIds(Set<Integer> gamesID) {
-        return gamesID.stream().map(x -> gameRepository.findById(x).orElseThrow(IllegalAccessError::new)).collect(Collectors.toSet());
+    public List<Game> getGamesByIds(List<Integer> gamesID) {
+        return gamesID.stream().map(x -> gameRepository.findById(x).orElseThrow(IllegalAccessError::new)).collect(Collectors.toList());
     }
 
     @Override

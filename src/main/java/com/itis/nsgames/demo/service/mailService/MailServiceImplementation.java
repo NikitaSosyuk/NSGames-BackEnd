@@ -12,7 +12,6 @@ import java.util.UUID;
 
 @Service
 public class MailServiceImplementation implements MailService {
-
     private final JavaMailSender mailSender;
     private final UserService userService;
 

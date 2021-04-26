@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 public interface GameService {
-    List<GameDto> getAll();
-    Set<Game> getGamesByIds(Set<Integer> gamesID);
     void putAll();
+    List<GameDto> getAll();
+    List<Game> getGamesByIds(List<Integer> gamesID);
 }

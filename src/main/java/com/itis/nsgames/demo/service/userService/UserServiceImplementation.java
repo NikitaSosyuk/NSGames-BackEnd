@@ -22,7 +22,7 @@ public class UserServiceImplementation implements UserService {
 
     @Override
     public User getById(Long id) {
-        return userRepository.findById(id).orElse(null);
+        return userRepository.findById(id).orElseThrow(IllegalAccessError::new);
     }
 
     @Override

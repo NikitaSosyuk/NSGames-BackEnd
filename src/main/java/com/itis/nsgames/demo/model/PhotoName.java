@@ -6,17 +6,16 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "game", uniqueConstraints = {
+@Table(name = "photo_name", uniqueConstraints = {
         @UniqueConstraint(columnNames = "name", name = "name_unique")
 })
-public class Game {
+public class PhotoName {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -24,3 +23,4 @@ public class Game {
     @Column
     private String name;
 }
+

@@ -1,6 +1,7 @@
 package com.itis.nsgames.demo.security.token;
 
 import com.itis.nsgames.demo.model.User;
+import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,6 +11,7 @@ import java.util.Collections;
 
 public class ApplicationUserDetails implements UserDetails {
 
+    @Getter
     private final User user;
 
     public ApplicationUserDetails(User user) {

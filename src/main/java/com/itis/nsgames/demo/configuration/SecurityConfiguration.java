@@ -19,8 +19,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
-    @Autowired
-    private JwtFilter jwtFilter;
+    private final JwtFilter jwtFilter;
+
+    public SecurityConfiguration(JwtFilter jwtFilter) {
+        this.jwtFilter = jwtFilter;
+    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -41,6 +44,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/signUp").permitAll()
                 .antMatchers("/signIn").permitAll()
+                .antMatchers("/image/*").permitAll()
                 .antMatchers("/forgotPassword/*").permitAll()
                 .antMatchers("/admin/**").hasAuthority(User.Role.ADMIN.toString())
                 .antMatchers("/game/putAll").hasAuthority(User.Role.ADMIN.toString())

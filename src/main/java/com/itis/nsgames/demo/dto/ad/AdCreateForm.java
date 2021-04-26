@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Set;
@@ -14,9 +15,8 @@ import java.util.Set;
 @NoArgsConstructor
 @Builder
 public class AdCreateForm {
-    private Long userId;
     private String title;
     private String description;
     private Double price;
-    private Set<Integer> games;
+    private List<Integer> games;
 }

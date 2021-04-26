@@ -19,14 +19,15 @@ import java.util.Map;
 
 @RestController
 public class ForgotPasswordController {
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+    private final JwtTokenProvider jwtTokenProvider;
+    private final MailService mailService;
 
-    @Autowired
-    private JwtTokenProvider jwtTokenProvider;
-
-    @Autowired
-    private MailService mailService;
+    public ForgotPasswordController(MailService mailService, JwtTokenProvider jwtTokenProvider, UserService userService) {
+        this.mailService = mailService;
+        this.jwtTokenProvider = jwtTokenProvider;
+        this.userService = userService;
+    }
 
     @PostMapping("/forgotPassword/sendEmail")
     public ResponseEntity<?> signIn(@RequestBody UserSignInForm userForm) {

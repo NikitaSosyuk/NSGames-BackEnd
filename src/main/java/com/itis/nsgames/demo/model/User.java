@@ -1,15 +1,11 @@
 package com.itis.nsgames.demo.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
 import java.util.Set;
 
-@Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -20,39 +16,49 @@ import java.util.Set;
 })
 public class User {
     @Id
+    @Setter @Getter
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Setter @Getter
     @Column(name = "chat_id")
     private String chatId;
 
     @Column
+    @Setter @Getter
     private String username;
 
+    @Setter @Getter
     @Column(name = "password_code")
     private String code;
 
     @Column
+    @Setter @Getter
     private String email;
 
     @Column
+    @Setter @Getter
     private String password;
 
+    @Setter @Getter
     @Column(name = "account_state")
     @Enumerated(value = EnumType.STRING)
     private State userState;
 
+    @Setter @Getter
     @Column(name = "account_role")
     @Enumerated(value = EnumType.STRING)
     private Role userRole;
 
+    @Setter @Getter
     @OneToMany(mappedBy = "user")
-    private Set<Ad> ads;
+    private List<Ad> ads;
 
+    @Setter @Getter
     @ManyToMany
     @JoinTable(name = "ad_user",
             joinColumns = {@JoinColumn(name = "ad_id", referencedColumnName = "id")},
-            inverseJoinColumns = {@JoinColumn(name = "account_id", referencedColumnName = "id")})
+            inverseJoinColumns = {@JoinColumn(name = "accoun_id", referencedColumnName = "id")})
     private Set<Ad> likedAds;
 
     public enum State {
