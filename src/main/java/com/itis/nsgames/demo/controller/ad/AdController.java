@@ -1,12 +1,12 @@
 package com.itis.nsgames.demo.controller.ad;
 
 import com.itis.nsgames.demo.dto.ad.*;
-import com.itis.nsgames.demo.dto.game.GameDto;
-import com.itis.nsgames.demo.dto.user.UserIdForm;
+import com.itis.nsgames.demo.model.Ad;
 import com.itis.nsgames.demo.model.Game;
 import com.itis.nsgames.demo.security.token.ApplicationUserDetails;
 import com.itis.nsgames.demo.service.adService.AdService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.sipios.springsearch.anotation.SearchSpec;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.*;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -33,19 +33,9 @@ public class AdController {
         return ResponseEntity.ok(adService.getFavorites(userDetails.getUser().getId()));
     }
 
-    @GetMapping("ad/getTradeList/{id}")
+    @GetMapping("ad/tradeList/{id}")
     public ResponseEntity<List<Game>> getGames(@PathVariable(value="id") Integer id) {
         return ResponseEntity.ok(adService.getTradeList(id));
-    }
-
-    @GetMapping(value = "/image/{photoName}")
-    public ResponseEntity<byte[]> getImageAsResponseEntity(@PathVariable(value="photoName") String photoName) throws IOException {
-        HttpHeaders headers = new HttpHeaders();
-        InputStream in = new FileInputStream(new File("src/main/resources/photos/" + photoName));
-        byte[] media = in.readAllBytes();
-        headers.setCacheControl(CacheControl.noCache().getHeaderValue());
-
-        return new ResponseEntity<>(media, headers, HttpStatus.OK);
     }
 
     @PostMapping(value = "/ad/create")
@@ -67,6 +57,14 @@ public class AdController {
             return ResponseEntity.ok(null);
         }
         return ResponseEntity.status(404).body(null);
+    }
+
+    @DeleteMapping("/ad/delete/{id}")
+    public ResponseEntity<?> deleteAd(@AuthenticationPrincipal ApplicationUserDetails userDetails, @PathVariable(value="id") Integer id) {
+        if (adService.deleteAd(id, userDetails.getUser().getId())) {
+            return ResponseEntity.ok(true);
+        }
+        return ResponseEntity.status(440).body(false);
     }
 
     @PostMapping("/ad/detail")

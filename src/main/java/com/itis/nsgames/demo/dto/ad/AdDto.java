@@ -27,7 +27,9 @@ public class AdDto {
     private String chatId;
     private Integer countTradeGames;
     private Integer countViews;
+    private Integer countOffers;
     private List<String> photoNames;
+    private String firstPhoto;
 
     public static AdDto from(Ad ad, String username, String chatId, List<String> photoNames) {
         return AdDto.builder()
@@ -41,6 +43,20 @@ public class AdDto {
                 .chatId(chatId)
                 .countViews(ad.getViews())
                 .photoNames(photoNames)
+                .build();
+    }
+
+    public static AdDto from(Ad ad) {
+        return AdDto.builder()
+                .id(ad.getId())
+                .title(ad.getTitle())
+                .description(ad.getDescription())
+                .price(ad.getPrice())
+                .countTradeGames(ad.getTradeGames().size())
+                .date(ad.getDate())
+                .firstPhoto(ad.getPhotoNames().get(0).getName())
+                .countViews(ad.getViews())
+                .countOffers(ad.getOfferList().size())
                 .build();
     }
 }

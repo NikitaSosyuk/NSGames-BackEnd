@@ -108,6 +108,16 @@ public class AdServiceImplementation implements AdService {
     }
 
     @Override
+    public boolean deleteAd(Integer id, Long userId) {
+        Ad ad = adRepository.findById(id).orElseThrow(IllegalAccessError::new);
+        if (ad.getUser().getId().equals(userId)) {
+            adRepository.deleteById(id);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
     public AdDto getAdById(Integer id) {
         Ad ad = adRepository.findById(id).orElseThrow(IllegalAccessError::new);
         List<String> photoNames = new LinkedList<>();
@@ -123,5 +133,11 @@ public class AdServiceImplementation implements AdService {
     public List<AdFeedDto> getFavorites(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(IllegalAccessError::new);
         return user.getLikedAds().stream().sorted(Ad::compareTo).map(x -> AdFeedDto.from(x, true)).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<AdDto> getUserAds(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(IllegalAccessError::new);
+        return user.getAds().stream().sorted().map(AdDto::from).collect(Collectors.toList());
     }
 }

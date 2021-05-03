@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Cascade;
+import org.springframework.stereotype.Indexed;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -16,6 +18,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Entity
 @Table(name = "ad")
+@Indexed
 public class Ad implements Comparable<Ad> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
