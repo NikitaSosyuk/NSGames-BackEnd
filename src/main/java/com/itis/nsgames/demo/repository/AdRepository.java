@@ -9,4 +9,5 @@ import java.util.Optional;
 
 @RepositoryRestResource
 public interface AdRepository extends JpaRepository<Ad, Integer> {
+    Optional<Ad> findByIdAndAdState(Integer id, Ad.State state);
 }

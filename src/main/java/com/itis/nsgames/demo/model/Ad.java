@@ -39,6 +39,10 @@ public class Ad implements Comparable<Ad> {
     @Column
     private Integer views;
 
+    @Column(name = "ad_state")
+    @Enumerated(value = EnumType.STRING)
+    private State adState;
+
     @ManyToOne
     @JoinColumn(name = "account_id")
     private User user;
@@ -64,6 +68,10 @@ public class Ad implements Comparable<Ad> {
             return 1;
         }
         return 0;
+    }
+
+    public enum State {
+        ACTIVE, DELETED
     }
 
 }

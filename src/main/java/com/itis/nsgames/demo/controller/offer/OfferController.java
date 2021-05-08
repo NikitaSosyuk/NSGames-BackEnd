@@ -27,9 +27,9 @@ public class OfferController {
         return ResponseEntity.ok(offerService.getOffersById(id));
     }
 
-    @GetMapping(value = "ad/getTradeGames")
-    public ResponseEntity<List<GameDto>> getOfferTradeGameList(@RequestBody OfferDto offer) {
-        return ResponseEntity.ok(offerService.getGameList(offer.getId()));
+    @GetMapping(value = "ad/offerGameList/{id}")
+    public ResponseEntity<List<GameDto>> getOfferTradeGameList(@PathVariable(value="id") Integer id) {
+        return ResponseEntity.ok(offerService.getGameList(id));
     }
 
     @PostMapping(value = "/ad/createOffer")

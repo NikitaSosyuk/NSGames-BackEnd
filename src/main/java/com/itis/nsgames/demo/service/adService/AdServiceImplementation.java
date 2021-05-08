@@ -41,10 +41,12 @@ public class AdServiceImplementation implements AdService {
         Random random = new Random();
         long count = adRepository.count();
         Set<AdFeedDto> result = new HashSet<>();
-        for (int i = 0; i < 30; i++) {
-            int index = random.nextInt((int) count + 1);
-            if (index >= 0) {
-                adRepository.findById(index).ifPresent(ad -> result.add(AdFeedDto.from(ad, userLikedAd.contains(ad))));
+        if (count != 0) {
+            for (int i = 0; i < 100; i++) {
+                int index = random.nextInt((int) count + 1);
+                if (index >= 0) {
+                    adRepository.findByIdAndAdState(index, Ad.State.ACTIVE).ifPresent(ad -> result.add(AdFeedDto.from(ad, userLikedAd.contains(ad))));
+                }
             }
         }
         return result;
@@ -67,6 +69,7 @@ public class AdServiceImplementation implements AdService {
                 .tradeGames(gameService.getGamesByIds(adForm.getGames()))
                 .date(new Date())
                 .user(user)
+                .adState(Ad.State.ACTIVE)
                 .views(1)
                 .build();
 
@@ -84,7 +87,7 @@ public class AdServiceImplementation implements AdService {
         fileStream.write(photo.getBytes());
         fileStream.close();
         PhotoName photoName = PhotoName.builder().name(name).build();
-        Ad ad = adRepository.findById(adId).orElseThrow(IllegalAccessError::new);
+        Ad ad = adRepository.findByIdAndAdState(adId, Ad.State.ACTIVE).orElseThrow(IllegalAccessError::new);
         ad.getPhotoNames().add(photoRepository.save(photoName));
         adRepository.save(ad);
         return true;
@@ -111,7 +114,8 @@ public class AdServiceImplementation implements AdService {
     public boolean deleteAd(Integer id, Long userId) {
         Ad ad = adRepository.findById(id).orElseThrow(IllegalAccessError::new);
         if (ad.getUser().getId().equals(userId)) {
-            adRepository.deleteById(id);
+            ad.setAdState(Ad.State.DELETED);
+            adRepository.save(ad);
             return true;
         }
         return false;
@@ -132,12 +136,12 @@ public class AdServiceImplementation implements AdService {
     @Override
     public List<AdFeedDto> getFavorites(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(IllegalAccessError::new);
-        return user.getLikedAds().stream().sorted(Ad::compareTo).map(x -> AdFeedDto.from(x, true)).collect(Collectors.toList());
+        return user.getLikedAds().stream().filter(x -> x.getAdState().equals(Ad.State.ACTIVE)).sorted(Ad::compareTo).map(x -> AdFeedDto.from(x, true)).collect(Collectors.toList());
     }
 
     @Override
     public List<AdDto> getUserAds(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(IllegalAccessError::new);
-        return user.getAds().stream().sorted().map(AdDto::from).collect(Collectors.toList());
+        return user.getAds().stream().filter(x -> x.getAdState().equals(Ad.State.ACTIVE)).sorted().map(AdDto::from).collect(Collectors.toList());
     }
 }

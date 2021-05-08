@@ -16,7 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "offer")
-public class Offer implements Comparable<Offer>{
+public class Offer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -31,7 +31,7 @@ public class Offer implements Comparable<Offer>{
     private Date date;
 
     @ManyToMany
-    @JoinTable(name = "ad_offer",
+    @JoinTable(name = "games_offer",
             joinColumns = {@JoinColumn(name = "offer_id", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "game_id", referencedColumnName = "id")})
     private List<Game> tradeGames;
@@ -39,15 +39,4 @@ public class Offer implements Comparable<Offer>{
     @ManyToOne
     @JoinColumn(name = "from_user_id")
     private User fromUser;
-
-    @Override
-    public int compareTo(@NotNull Offer o) {
-        if (this.date.before(o.date)) {
-            return 1;
-        }
-        if (this.date.after(o.date)) {
-            return -1;
-        }
-        return 0;
-    }
 }

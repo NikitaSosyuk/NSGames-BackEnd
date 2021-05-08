@@ -11,8 +11,11 @@ import java.util.List;
 
 @RestController
 public class AdminController {
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+
+    public AdminController(UserService userService) {
+        this.userService = userService;
+    }
 
     @GetMapping("/admin/getAll")
     public ResponseEntity<List<User>> getAll() {

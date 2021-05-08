@@ -37,7 +37,7 @@ public class OfferServiceImplementation implements OfferService {
     @Override
     public List<OfferDto> getOffersById(Integer id) {
         Ad ad = adRepository.findById(id).orElseThrow(IllegalAccessError::new);
-        return ad.getOfferList().stream().sorted().map(x -> OfferDto.from(x, x.getFromUser().getUsername())).collect(Collectors.toList());
+        return ad.getOfferList().stream().map(x -> OfferDto.from(x, x.getFromUser().getUsername())).collect(Collectors.toList());
     }
 
     @Override
