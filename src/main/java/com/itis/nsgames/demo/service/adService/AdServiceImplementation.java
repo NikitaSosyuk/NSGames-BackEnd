@@ -36,20 +36,20 @@ public class AdServiceImplementation implements AdService {
     }
 
     @Override
-    public Set<AdFeedDto> getFeed(Long userId) {
+    public List<AdFeedDto> getFeed(Long userId) {
         Set<Ad> userLikedAd = userRepository.findById(userId).orElseThrow(IllegalAccessError::new).getLikedAds();
-        Random random = new Random();
-        long count = adRepository.count();
-        Set<AdFeedDto> result = new HashSet<>();
-        if (count != 0) {
-            for (int i = 0; i < 100; i++) {
-                int index = random.nextInt((int) count + 1);
-                if (index >= 0) {
-                    adRepository.findByIdAndAdState(index, Ad.State.ACTIVE).ifPresent(ad -> result.add(AdFeedDto.from(ad, userLikedAd.contains(ad))));
-                }
-            }
-        }
-        return result;
+//        Random random = new Random();
+//        long count = adRepository.count();
+//        Set<AdFeedDto> result = new HashSet<>();
+//        if (count != 0) {
+//            for (int i = 0; i < 100; i++) {
+//                int index = random.nextInt((int) count + 1);
+//                if (index >= 0) {
+//                    adRepository.findByIdAndAdState(index, Ad.State.ACTIVE).ifPresent(ad -> result.add(AdFeedDto.from(ad, userLikedAd.contains(ad))));
+//                }
+//            }
+//        }
+        return adRepository.getFeedList().stream().filter(x -> x.getAdState().equals(Ad.State.ACTIVE)).map(x -> AdFeedDto.from(x, userLikedAd.contains(x))).collect(Collectors.toList());
     }
 
     @Override
@@ -143,5 +143,12 @@ public class AdServiceImplementation implements AdService {
     public List<AdDto> getUserAds(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(IllegalAccessError::new);
         return user.getAds().stream().filter(x -> x.getAdState().equals(Ad.State.ACTIVE)).sorted().map(AdDto::from).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<AdFeedDto> searchBy(String name, Long userId) {
+        Set<Ad> userLikedAd = userRepository.findById(userId).orElseThrow(IllegalAccessError::new).getLikedAds();
+        List<Ad> result = adRepository.findAllByTitleStartsWithIgnoreCaseOrderByTitle(name).orElse(new ArrayList<>());
+        return result.stream().filter(x -> x.getAdState().equals(Ad.State.ACTIVE)).map(x -> AdFeedDto.from(x, userLikedAd.contains(x))).collect(Collectors.toList());
     }
 }

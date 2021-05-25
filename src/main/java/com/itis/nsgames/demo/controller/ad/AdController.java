@@ -1,12 +1,9 @@
 package com.itis.nsgames.demo.controller.ad;
 
 import com.itis.nsgames.demo.dto.ad.*;
-import com.itis.nsgames.demo.model.Ad;
 import com.itis.nsgames.demo.model.Game;
 import com.itis.nsgames.demo.security.token.ApplicationUserDetails;
 import com.itis.nsgames.demo.service.adService.AdService;
-import com.sipios.springsearch.anotation.SearchSpec;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.*;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -24,8 +21,13 @@ public class AdController {
     }
 
     @GetMapping("/ad/feed")
-    public ResponseEntity<Set<AdFeedDto>> getFeed(@AuthenticationPrincipal ApplicationUserDetails userDetails) {
+    public ResponseEntity<List<AdFeedDto>> getFeed(@AuthenticationPrincipal ApplicationUserDetails userDetails) {
         return ResponseEntity.ok(adService.getFeed(userDetails.getUser().getId()));
+    }
+
+    @GetMapping("/ad/search/{name}")
+    public ResponseEntity<List<AdFeedDto>> getFeed(@AuthenticationPrincipal ApplicationUserDetails userDetails, @PathVariable(value="name") String name) {
+        return ResponseEntity.ok(adService.searchBy(name, userDetails.getUser().getId()));
     }
 
     @GetMapping("/ad/favorites")

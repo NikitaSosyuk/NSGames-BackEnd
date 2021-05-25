@@ -21,8 +21,9 @@ public interface AdService {
     AdDto getAdById(Integer id);
     AdIdForm saveAd(Long userId, AdCreateForm ad);
 
-    Set<AdFeedDto> getFeed(Long userId);
+    List<AdFeedDto> getFeed(Long userId);
     List<Game> getTradeList(Integer id);
     List<AdDto> getUserAds(Long userId);
+    List<AdFeedDto> searchBy(String name, Long userId);
     List<AdFeedDto> getFavorites(Long userId);
 }

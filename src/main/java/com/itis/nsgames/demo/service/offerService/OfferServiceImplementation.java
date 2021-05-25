@@ -31,7 +31,7 @@ public class OfferServiceImplementation implements OfferService {
 
     @Override
     public List<GameDto> getGameList(Integer id) {
-        return offerRepository.findById(id).orElseThrow(IllegalAccessError::new).getTradeGames().stream().sorted().map(GameDto::from).collect(Collectors.toList());
+        return offerRepository.findById(id).orElseThrow(IllegalAccessError::new).getTradeGames().stream().map(GameDto::from).collect(Collectors.toList());
     }
 
     @Override

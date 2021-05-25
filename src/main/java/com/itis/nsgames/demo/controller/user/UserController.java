@@ -36,7 +36,7 @@ public class UserController {
         return ResponseEntity.ok(UserDto.from(userService.getById(userDetails.getUser().getId())));
     }
 
-    @PostMapping(value = "user/info")
+    @PostMapping(value = "user/logout")
     public void logout(HttpServletRequest request, HttpServletResponse response) {
         SecurityContextLogoutHandler securityContextLogoutHandler = new SecurityContextLogoutHandler();
         securityContextLogoutHandler.logout(request, response, null);

@@ -48,7 +48,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/image/*").permitAll()
                 .antMatchers("/forgotPassword/*").permitAll()
                 .antMatchers("/admin/**").hasAuthority(User.Role.ADMIN.toString())
-                .antMatchers("/game/putAll").hasAuthority(User.Role.ADMIN.toString())
+                .antMatchers("/game/putAll").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
